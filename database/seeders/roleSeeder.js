@@ -1,21 +1,18 @@
 const Role = require('../../models/Role');
-module.exports = async () =>{
+
+async function insertRoles() {
+    const rolesToInsert = [
+        { name: 'Manager' },
+        { name: 'DeliveryMan' },
+        { name: 'Client' },
+    ];
 
     try {
-        const adminRole = new Role({ name: 'Manager' });
-        const clientRole = new Role({ name: 'Client' });
-        const deliveryRole = new Role({ name: 'Delivery' });
-    
-        // await Role.insertMany([
-        //     { name: 'Manager' },
-        //     { name: 'Client' },            
-        //     { name: 'Delivery' }
-        // ])
-        // console.log("inserted");
-        await adminRole.save();
-        await clientRole.save();
-        await deliveryRole.save();
+        await Role.insertMany(rolesToInsert);
+        console.log('Roles inserted successfully');
     } catch (error) {
-        console.error(error);
+        console.error('Error inserting roles:', error);
     }
 }
+
+module.exports = insertRoles ;
