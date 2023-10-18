@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const {verifyEmailVueGenerator} = require('./emailVueGenerator');
+const { mailVueGenerator , } = require('./emailVueGenerator');
 
-const emailVerificationMessage = (email) => {
+const emailVerificationMessage = (email , subject) => {
     const payload = {
         email
     }
@@ -11,14 +11,14 @@ const emailVerificationMessage = (email) => {
     const message = {
         from: `Allo Media ${process.env.MAIL_USERNAME}`,
         to: email,
-        subject: "Email Verification",
-        html: verifyEmailVueGenerator(token)
+        subject: subject,
+        html: mailVueGenerator(token, subject),
     };
 
     return message;
 }
 
+
 module.exports = {
     emailVerificationMessage,
-    // resetPasswordMessage,
 }

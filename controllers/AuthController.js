@@ -2,7 +2,8 @@ const User = require("../models/User");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const verifyEmailVueGenerator = require("../utils/emailVueGenerator");
-const { send } = require("../utils/emailSender");
+const { sendEMail } = require("../utils/emailSender");
+const { emailVerificationMessage } = require("../utils/messagesGenerator");
 
 class AuthController {
     static async login(req,res){
@@ -50,23 +51,6 @@ class AuthController {
         return res.status(200).json({message:"logged out"})
     }
 
-    // static async sendVerification(email){
-    //     const payload = {
-    //         email
-    //     }
-    //     const token = jwt.sign(payload,process.env.JWT_SECRET,{
-    //         expiresIn : 600,
-    //     })
-    //     const message = {
-    //         from: `Allo Media ${process.env.MAIL_USERNAME}`,
-    //         to: email,
-    //         subject: "Email Verification",
-    //         html: verifyEmailVueGenerator(token)
-    //       };
-
-    //     send(message);
-    // }
-
     static async verifyEmail(req,res){
         let user = await User.findOneAndUpdate({ email: req.user.email }, {verified : true}, { new: true });
         if (user) {
@@ -82,7 +66,33 @@ class AuthController {
 
     static async forgetPassword(req, res){
         let {email} = req.body;
-        // let user =  
+        if(!email){
+            return res.status(400).json({message: 'Email is required'})
+        }
+
+        const user = await User.findOne({ email });
+
+        if(!user){
+            return res.status(401).json({message: 'Email is not correct'})
+        }
+        
+        sendEMail(emailVerificationMessage(user.email, "Reset Password"))
+
+        res.status(200).json({message : "Email sent successfully"})
+    }
+
+    static async resetPassword(req, res){
+        let user = await User.findOne({ email: req.user.email });
+        if(!user) return res.status(500).json({ error: "Error while Updating" });
+
+        const {password , password_confirmation} = req.body;
+        if(!password || !password_confirmation) return res.status(400).json({message: 'All fields are required'})
+        if(password != password_confirmation) return res.status(400).json({message: 'Password does not match'})
+        
+        user.password = password ;
+        await user.save();
+
+        return res.status(201).json({message: 'password updated successfully'}) 
     }
 }
 

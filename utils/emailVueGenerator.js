@@ -1,8 +1,16 @@
 /* search for this <a href="http://127.0.0.1:3000/auth/verifyEmail/${token}" */
 module.exports ={
-	verifyEmailVueGenerator
+	mailVueGenerator
 } 
-function verifyEmailVueGenerator(token){
+function mailVueGenerator(token,subject){
+	let url , buttonContent;
+	if(subject == "Email Verification"){
+		url = `http://127.0.0.1:3000/auth/verifyEmail/${token}`
+		buttonContent = "Verify email"
+	}else{
+		url = `http://127.0.0.1:3000/auth/resetPassword/${token}`
+		buttonContent = "Reset Password"
+	}
     return `
     <head>
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -212,13 +220,9 @@ padding-bottom: 20px;"></td>
 	vertical-align: top;
     border: none !important;
 padding: 0 35px 40px;">
-							<h1 style="	font-size: 20px;
-	font-weight: 500;
-	margin-top: 40px;
-	margin-bottom: 0;
-">Hi Smiles Davis,</h1>
-							<p class="near_title last" style="margin-top: 10px;margin-bottom: 0;">Please verify that your email address is hello@SmilesDavis.yeah, and that you entered it when signing up for Waze Carpool.</p>
-							<a href="http://127.0.0.1:3000/auth/verifyEmail/${token}" style="	display: block;
+							
+							<p class="near_title last" style="margin-top: 10px;margin-bottom: 0;">${subject}</p>
+							<a href="${url}" style="	display: block;
 	width: 100%;
 	max-width: 300px;
 	background: #20DA9C;
@@ -228,13 +232,7 @@ padding: 0 35px 40px;">
 	padding: 12px 0;
 	margin: 30px auto 0;
 	text-decoration: none;
-" target="_blank">Verify email</a>
-							<small style="	display: block;
-	width: 100%;
-	max-width: 330px;
-	margin: 14px auto 0;
-	font-size: 14px;
-">Wazers who carpool may see that you work at reallygoodemails.com, but your email address stays private.</small>
+" target="_blank">${buttonContent}</a>
 						</td>
 					</tr>
 				</tbody></table>
@@ -268,7 +266,7 @@ padding: 0 35px 40px;">
                             vertical-align: top;
                             border: none !important;
                             padding: 20px;">
-							<p class="marginless" style="margin: 0;">Happy carpooling, <br>The Waze Carpool Team</p>
+							<p class="marginless" style="margin: 0;">Allo Media</p>
 						</td>
 					</tr>
 				</tbody>
