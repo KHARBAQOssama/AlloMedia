@@ -8,5 +8,7 @@ router.post('/register',UserController.register);
 router.post('/login',AuthController.login);
 router.post('/logout', AuthMiddleware.verifyLocalToken, AuthController.logout);
 router.get("/verifyEmail/:token",AuthMiddleware.verifyMailedToken,AuthController.verifyEmail)
+router.post("/forgetPassword",AuthController.forgetPassword)
+router.post("/resetPassword/:token",AuthMiddleware.verifyMailedToken,AuthController.resetPassword)
 
 module.exports = router

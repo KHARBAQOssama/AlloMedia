@@ -3,7 +3,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const AuthController = require('./AuthController');
 const { emailVerificationMessage } = require('../utils/messagesGenerator');
-const { sendMail } = require('../utils/emailSender');
+const { sendEMail } = require('../utils/emailSender');
 
 class UserController {
     static async register(req,res){
@@ -45,7 +45,7 @@ class UserController {
         })
         await user.save()
         console.log(req.body);
-        sendMail(emailVerificationMessage(user.email))
+        sendEMail(emailVerificationMessage(user.email, "Email Verification"))
         res.status(201).json({message: `User has been added`,user})
     }
 }
