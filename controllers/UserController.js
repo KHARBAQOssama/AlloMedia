@@ -1,6 +1,7 @@
 const Role = require('../models/Role');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const AuthController = require('./AuthController');
 
 class UserController {
     static async register(req,res){
@@ -31,9 +32,7 @@ class UserController {
         if (!selectedRole) {
             return res.status(400).json({ error: 'Invalid role' });
         }
-        const saltRounds = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        password = await bcrypt.hash(password, salt);
+
         let user = new User({ 
             email,
             full_name,
@@ -42,8 +41,9 @@ class UserController {
             address,
             role : selectedRole._id
         })
-        user.save()
+        await user.save()
         console.log(req.body);
+        AuthController.sendVerification(user.email);
         res.status(201).json({message: `User has been added`,user})
     }
 }
