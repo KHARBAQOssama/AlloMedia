@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
-    "seed": "node database/seeders/seeder.js"
+    "seed": "node database/seeders/seeder.js",
+    "generate:jwt_secret": "node utils/generateSecretKey.js"
   },
   "repository": {
     "type": "git",
@@ -15,10 +16,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.2",
+    "nodemailer": "^6.9.6",
     "nodemon": "^3.0.1"
   }
 }
