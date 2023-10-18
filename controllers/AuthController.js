@@ -40,6 +40,7 @@ class AuthController {
         return res.cookie('accessToken',token,{
             httpOnly: true,
         }).send({
+            message : user.verified ? "Verified Account" : "You should verify your account, check your email", 
             user,
         })
     }
@@ -67,11 +68,16 @@ class AuthController {
     }
 
     static async verifyEmail(req,res){
-        let user = await User.findOne({email : req.user.email})
-        if(!user) return res.status(404).json({error:"no user found"})
-        user.verified = true;
-        await user.save();
-        res.status(200).json({message:"email has been verified"});
+        let user = await User.findOneAndUpdate({ email: req.user.email }, {verified : true}, { new: true });
+        if (user) {
+            if (user.verified) {
+              return res.status(200).json({ message: "User has been verified" });
+            } else {
+              return res.status(500).json({ error: "Error while Updating" });
+            }
+          } else {
+            return res.status(404).json({ error: "No user found" });
+          }
     }
 }
 
