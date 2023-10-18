@@ -1,5 +1,8 @@
 /* search for this <a href="http://127.0.0.1:3000/auth/verifyEmail/${token}" */
-module.exports = (token) => {
+module.exports ={
+	verifyEmailVueGenerator
+} 
+function verifyEmailVueGenerator(token){
     return `
     <head>
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">

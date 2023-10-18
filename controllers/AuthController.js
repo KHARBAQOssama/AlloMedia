@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const verifyEmailVueGenerator = require("../utils/verifyEmailVueGenerator");
+const verifyEmailVueGenerator = require("../utils/emailVueGenerator");
 const { send } = require("../utils/emailSender");
 
 class AuthController {
@@ -50,22 +50,22 @@ class AuthController {
         return res.status(200).json({message:"logged out"})
     }
 
-    static async sendVerification(email){
-        const payload = {
-            email
-        }
-        const token = jwt.sign(payload,process.env.JWT_SECRET,{
-            expiresIn : 600,
-        })
-        const message = {
-            from: `Allo Media ${process.env.MAIL_USERNAME}`,
-            to: email,
-            subject: "Email Verification",
-            html: verifyEmailVueGenerator(token)
-          };
+    // static async sendVerification(email){
+    //     const payload = {
+    //         email
+    //     }
+    //     const token = jwt.sign(payload,process.env.JWT_SECRET,{
+    //         expiresIn : 600,
+    //     })
+    //     const message = {
+    //         from: `Allo Media ${process.env.MAIL_USERNAME}`,
+    //         to: email,
+    //         subject: "Email Verification",
+    //         html: verifyEmailVueGenerator(token)
+    //       };
 
-        send(message);
-    }
+    //     send(message);
+    // }
 
     static async verifyEmail(req,res){
         let user = await User.findOneAndUpdate({ email: req.user.email }, {verified : true}, { new: true });
@@ -78,6 +78,11 @@ class AuthController {
           } else {
             return res.status(404).json({ error: "No user found" });
           }
+    }
+
+    static async forgetPassword(req, res){
+        let {email} = req.body;
+        // let user =  
     }
 }
 
