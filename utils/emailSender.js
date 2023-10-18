@@ -1,5 +1,5 @@
 const transporter = require('../config/mailingConfig');
-async function send(messageOptions){
+async function sendMail(messageOptions){
     transporter.sendMail(messageOptions, (error, info) => {
         if (error) {
           console.log(error);
@@ -9,4 +9,4 @@ async function send(messageOptions){
       });
 }
 
-module.exports = {send};
+module.exports = {sendMail};
