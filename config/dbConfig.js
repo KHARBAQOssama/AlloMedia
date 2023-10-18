@@ -51,7 +51,8 @@ async function seedDefaultManager(){
       email : process.env.DEFAULT_MANAGER_EMAIL,
       password : process.env.DEFAULT_MANAGER_PASSWORD,
       phone_number : process.env.DEFAULT_MANAGER_PHONE_NUMBER,
-      verified : true
+      verified : true,
+      approved : true,
     })
     return await user.save()
   }
