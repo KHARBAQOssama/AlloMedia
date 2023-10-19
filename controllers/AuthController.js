@@ -35,15 +35,28 @@ class AuthController {
             phone_number : user.phone_number,
             address : user.address,
         }
+
+        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH, {
+            expiresIn: '7d',
+        });
         const token = jwt.sign(payload,process.env.JWT_SECRET,{
-            expiresIn : '1h',
+            expiresIn : 900,
         })
-        return res.cookie('accessToken',token,{
+        res.cookie('accessToken',token,{
             httpOnly: true,
-        }).send({
-            message : user.verified ? "Verified Account" : "You should verify your account, check your email", 
-            user,
+            secure: true,
+            sameSite: 'Strict',
         })
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Strict',
+            maxAge: 604800000, 
+        });
+        return res.send({
+                    message : user.verified ? "Verified Account" : "You should verify your account, check your email", 
+                    user,
+                })
     }
 
     static async logout(req,res){
