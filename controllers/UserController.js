@@ -18,21 +18,29 @@ class UserController {
         } = req.body;
 
         if(!email , !full_name, !password, !phone_number, !address , !role,!password_confirmation){
-            res.status(400).json({message: 'All fields are required'})
-            return
+            return res.status(400).json({message: 'All fields are required'})
         }
         if(password != password_confirmation){
-            res.status(400).json({message: 'Passwords do not match'})
-            return
+            return res.status(400).json({message: 'Passwords do not match'})
         }
+
         if(role != "DeliveryMan" && role != "Client"){
-            res.status(400).json({message: 'Invalid Role'})
-            return
+            return res.status(400).json({message: 'Invalid Role'})
         }
 
         const selectedRole = await Role.findOne({ name: role });
         if (!selectedRole) {
             return res.status(400).json({ error: 'Invalid role' });
+        }
+
+        let existingUser = await User.findOne({email})
+        if(existingUser){
+            return res.status(400).json({message: 'Email already token'})
+        }
+
+        existingUser = await User.findOne({phone_number})
+        if(existingUser){
+            return res.status(400).json({message: 'Phone Number already in use'})
         }
 
         let user = new User({ 
@@ -43,9 +51,16 @@ class UserController {
             address,
             role : selectedRole._id
         })
-        await user.save()
-        console.log(req.body);
-        sendEMail(emailVerificationMessage(user.email, "Email Verification"))
+
+        try{
+
+            await user.save()
+            sendEMail(emailVerificationMessage(user.email, "Email Verification"))
+            
+        }catch(err){
+            console.log(err);
+        }
+        
         res.status(201).json({message: `User has been added`,user})
     }
 }

@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const verifyEmailVueGenerator = require("../utils/emailVueGenerator");
 const { sendEMail } = require("../utils/emailSender");
 const { emailVerificationMessage } = require("../utils/messagesGenerator");
 
@@ -29,11 +28,14 @@ class AuthController {
         }
 
         const payload = {
-            id : user._id,
-            email : user.email,
-            full_name : user.full_name,
-            phone_number : user.phone_number,
-            address : user.address,
+            id               : user._id,
+            email            : user.email,
+            full_name        : user.full_name,
+            phone_number     : user.phone_number,
+            address          : user.address,
+            role             : user.role,
+            verified         : user.verified,
+            approved         : user.approved,
         }
 
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH, {
