@@ -19,7 +19,12 @@ require('./config/dbConfig')();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+
+
 app.use('/auth', require('./routes/authRoutes'));
+app.use('/user/client', require('./routes/ClientRoutes'));
+app.use('/user/DeliveryMan', require('./routes/DeliveryManRoutes'));
+app.use('/user/Manager', require('./routes/ManagerRoutes'));
 
 
 const PORT = process.env.PORT || 3000;
