@@ -1,3 +1,4 @@
+const { faker } = require('@faker-js/faker');
 const request = require('supertest');
 const express = require('express');
 const Role = require('../models/Role');
@@ -7,6 +8,10 @@ require('../config/dbConfig')();
 
 app.use(express.json());
 app.use('/auth', require('../routes/authRoutes'));
+
+let email = faker.internet.email();
+let full_name = faker.person.fullName();
+let phone_number = faker.phone.number();
 
 describe('register function', () => {
     it('should return a 400 response if any required field is missing', async () => {
@@ -21,11 +26,11 @@ describe('register function', () => {
 
     it('should return a 400 response if the passwords are not the same', async () => {
         const body = {
-          email: 'test@example.com',
-          full_name: 'Test User',
+          email,
+          full_name,
           password: 'password123',
           password_confirmation: 'password456', 
-          phone_number: '1234567890',
+          phone_number,
           address: '123 Main St',
           role: 'Client',
         };
@@ -38,11 +43,11 @@ describe('register function', () => {
 
     it('should return a 400 response if Role is invalid', async () => {
       const body = {
-          email: 'test@example.com',
-          full_name: 'Test User',
+          email,
+          full_name,
           password: 'password123',
           password_confirmation: 'password123',
-          phone_number: '1234567890',
+          phone_number,
           address: '123 Main St',
           role: 'Manager',
         };
@@ -58,11 +63,11 @@ describe('register function', () => {
       Role.findOne = jest.fn().mockResolvedValue({})
       User.findOne = jest.fn().mockResolvedValue({email : true})
       const body = {
-          email: 'existing@example.com',
-          full_name: 'Test User',
+          email,
+          full_name,
           password: 'password123',
           password_confirmation: 'password123',
-          phone_number: '1234567890',
+          phone_number,
           address: '123 Main St',
           role: 'Client',
         };
@@ -80,11 +85,11 @@ describe('register function', () => {
       User.save = jest.fn().mockResolvedValue(true);
 
       const body = {
-          email: 'existing2@example.com',
-          full_name: 'Test User',
+          email,
+          full_name,
           password: 'password123',
           password_confirmation: 'password123',
-          phone_number: '1234567890',
+          phone_number,
           address: '123 Main St',
           role: 'Client',
         };
