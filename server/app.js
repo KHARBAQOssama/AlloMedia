@@ -1,30 +1,26 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const app = express()
 require('dotenv').config()
 require('./config/dbConfig')();
-// const emailSender = require('./utils/emailSender');
 
-// const messageOptions = {
-//   from: 'Your Name '+process.env.MAIL_USERNAME,
-//   to: 'Recipient Name ossamakharbaq4@gmail.com',
-//   subject: 'This is the subject of the email',
-//   text: 'This is the body of the email',
-// };
-
-// emailSender.send(messageOptions);
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
+app.use(cors({
+    origin : "http://localhost:5173",
+    credentials : true
+}))
 
-app.use('/auth', require('./routes/authRoutes'));
-app.use('/user/client', require('./routes/ClientRoutes'));
-app.use('/user/DeliveryMan', require('./routes/DeliveryManRoutes'));
-app.use('/user/Manager', require('./routes/ManagerRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/user/client', require('./routes/ClientRoutes'));
+app.use('/api/user/DeliveryMan', require('./routes/DeliveryManRoutes'));
+app.use('/api/user/Manager', require('./routes/ManagerRoutes'));
 
 
 const PORT = process.env.PORT || 3000;
