@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Role = require('../models/Role');
 
 async function verifyLocalToken(req,res,next){
+  console.log(req.signedCookies);
     const accessToken = req.cookies['accessToken'];
     const refreshToken = req.cookies['refreshToken'];
     let user;
