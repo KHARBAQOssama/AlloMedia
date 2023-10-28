@@ -4,11 +4,13 @@ const UserController = require('../controllers/UserController');
 const AuthController = require('../controllers/AuthController');
 const AuthMiddleware = require('../middlewares/AuthMiddleware')
 
-router.post('/register', UserController.register);
-router.post('/login', AuthController.login);
+router.post('/register', AuthMiddleware.isLoggedOut, UserController.register);
+router.post('/login', AuthMiddleware.isLoggedOut, AuthController.login);
+router.post('/sendVerification', AuthController.sendEMailVerification);
+router.get('/me', AuthMiddleware.verifyLocalToken, AuthController.me);
 router.post('/logout', AuthMiddleware.verifyLocalToken, AuthController.logout);
-router.get("/verifyEmail/:token",AuthMiddleware.verifyMailedToken,AuthController.verifyEmail)
+router.post("/verifyEmail",AuthMiddleware.verifyMailedToken,AuthController.verifyEmail)
 router.post("/forgetPassword",AuthController.forgetPassword)
-router.post("/resetPassword/:token",AuthMiddleware.verifyMailedToken,AuthController.resetPassword)
+router.post("/resetPassword",AuthMiddleware.verifyMailedToken,AuthController.resetPassword)
 
 module.exports = router

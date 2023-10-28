@@ -5,6 +5,12 @@ const { sendEMail } = require("../utils/emailSender");
 const { emailVerificationMessage } = require("../utils/messagesGenerator");
 
 class AuthController {
+    static async me(req,res){
+        let email = req.user.email
+        const user = await User.findOne({ email });
+        return res.status(200).json({user})
+    }
+
     static async login(req,res){
         let { 
             email,
@@ -56,13 +62,13 @@ class AuthController {
             maxAge: 604800000, 
         });
         return res.send({
-                    message : user.verified ? "Verified Account" : "You should verify your account, check your email", 
-                    user,
+                    message : user.verified ? "Verified Account" : "You should verify your account, check your email"
                 })
     }
 
     static async logout(req,res){
         res.cookie('accessToken','')
+        res.cookie('refreshToken','')
         return res.status(200).json({message:"logged out"})
     }
 
@@ -78,7 +84,27 @@ class AuthController {
             return res.status(404).json({ error: "No user found" });
           }
     }
+    static async sendEMailVerification(req,res){
+        let { 
+            email
+        } = req.body;
 
+        if(!email){
+            return res.status(400).json({message: 'email field is required'})
+        }
+        
+        let existingUser = await User.findOne({email})
+        if(!existingUser){
+            return res.status(404).json({message: 'There is no user with this email'})
+        }
+        try{
+            sendEMail(emailVerificationMessage(existingUser.email, "Email Verification"))
+        }catch(err){
+            console.log(err);
+        }
+        
+        res.status(200).json({message: `Email has been sent , go and check`})
+    }
     static async forgetPassword(req, res){
         let {email} = req.body;
         if(!email){

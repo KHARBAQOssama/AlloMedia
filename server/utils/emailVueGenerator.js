@@ -4,11 +4,12 @@ module.exports ={
 } 
 function mailVueGenerator(token,subject){
 	let url , buttonContent;
+	// token = token.replace(/\./g, "-");
 	if(subject == "Email Verification"){
-		url = `http://127.0.0.1:3000/auth/verifyEmail/${token}`
+		url = `http://localhost:5173/verifyEmail?token=${token}`
 		buttonContent = "Verify email"
 	}else{
-		url = `http://127.0.0.1:3000/auth/resetPassword/${token}`
+		url = `http://localhost:5173/resetPassword?token=${token}`
 		buttonContent = "Reset Password"
 	}
     return `
