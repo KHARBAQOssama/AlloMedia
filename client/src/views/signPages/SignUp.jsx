@@ -1,13 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/userContext";
 import { useFormik } from 'formik';
 import { registerSchema } from "../../schemas/AuthForms";
+import { useNavigate } from "react-router-dom";
 
 
 const SignUp = () => {
+  const {user, setUser, register} = useUser();
+
   const onSubmit = (values,actions) => {
-    console.log(values, actions);
+    console.log(values);
+    setUser({
+      email : values.email,
+      full_name : values.full_name,
+      password : values.password,
+      password_confirmation : values.password_confirmation,
+      role
+    });
+    setMakeRegister(true);
   }
+
   const formik = useFormik({
     initialValues : {
       email : "",
@@ -18,14 +30,26 @@ const SignUp = () => {
     validationSchema: registerSchema,
     onSubmit
   });
-  // const {user, setUser, register} = useUser();
+
   const [role, setRole] = useState('Client');
+  const [makeRegister, setMakeRegister] = useState(false);
 
   const handleRoleChange = e => {
     setRole(e.target.value);
   };
 
 
+  useEffect(() => {
+    if(makeRegister) {
+      handleRegister();
+    }
+  }, [user]);
+
+  const navigate = useNavigate();
+  const handleRegister = async ()=>{
+    let data = await register();
+    if(data.status == 201) navigate("/registerSuccess");
+  }
 
 
   return (

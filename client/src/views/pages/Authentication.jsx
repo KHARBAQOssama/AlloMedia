@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { validate } from '../utils/Validator';
+import { validate } from '../../utils/Validator';
 import '../App.css'
-import api from '../api'
+import api from '../../api'
 
 const Authentication = () => {
     const [ inputPasswordType, setType ] = useState("password");
