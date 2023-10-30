@@ -6,6 +6,7 @@ export const registerSchema = yup.object().shape({
     .email("Please enter a valid email")
     .required("email is required"),
   full_name: yup.string().required("full name is required"),
+  phone_number: yup.string().required("phone number is required"),
   password: yup.string().min(6).required("Password is required"),
   password_confirmation: yup
     .string()

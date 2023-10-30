@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/userContext";
 import { useFormik } from "formik";
 import { loginSchema } from "../../schemas/AuthForms";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { user, setUser, login } = useUser();
@@ -45,7 +45,7 @@ const Login = () => {
   });
 
   return (
-    <div className="w-full h-full flex flex-col gap-2 max-w-screen-xl">
+    <div className="w-full h-full flex flex-col gap-2 max-w-screen-xl justify-center items-center">
       <h3 className="text-white font-bold text-3xl">Login</h3>
       <form
         onSubmit={formik.handleSubmit}
@@ -90,9 +90,11 @@ const Login = () => {
           className={formik.errors.password ? "invalid bg-red-300" : ""}
           placeholder="Password"
         />
+        
         <button type="submit" className="w-full text-white bg-brand">
           Login
         </button>
+        <NavLink to={'/forgetPassword'}><span>Forget Password ?</span></NavLink>
       </form>
     </div>
   );

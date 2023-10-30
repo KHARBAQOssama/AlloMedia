@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
-// import './App.css'
+import './App.css'
 import LandingPage from "./views/pages/LandingPage";
 import RootLayout from "./views/RootLayout";
 import Login from "./views/signPages/Login";
@@ -17,6 +17,7 @@ import Profile from "./views/pages/Profile";
 import VerifyEmail from "./views/pages/VerifyEmail";
 import ResetPassword from "./views/pages/ResetPassword";
 import ForgetPassword from "./views/pages/ForgetPassword";
+import EmailVerified from "./views/pages/EmailVerified";
 
 function App() {
   const {user} = useUser();
@@ -29,6 +30,7 @@ function App() {
         <Route path="/registerSuccess" element={<RegisterSuccess/>}/>
         <Route path="/me" element={user._id ? <Profile/> : <Navigate to={'/login'}/>}/>
         <Route path="/verifyEmail" element={<VerifyEmail/>}/>
+        <Route path="/verified" element={<EmailVerified/>}/>
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/forgetPassword" element={<ForgetPassword/>}/>
       </Route>

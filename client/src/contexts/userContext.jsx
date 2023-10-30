@@ -18,7 +18,7 @@ export function UserProvider({ children }) {
       response = await api.post("/auth/register", user);
       console.log(response);
     } catch (error) {
-      console.log(error);
+      response = error.response
     }
     return response;
   };

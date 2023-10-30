@@ -16,8 +16,9 @@ class UserController {
             address,
             role 
         } = req.body;
-
-        if(!email , !full_name, !password, !phone_number, !address , !role,!password_confirmation){
+console.log(email, full_name, phone_number, password);
+        if(!email , !full_name, !password ,!phone_number, !role,!password_confirmation){
+            
             return res.status(400).json({message: 'All fields are required'})
         }
         if(password != password_confirmation){

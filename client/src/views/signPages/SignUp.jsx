@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const {user, setUser, register} = useUser();
+  const [ message,setMessage] = useState('');
 
   const onSubmit = (values,actions) => {
     console.log(values);
@@ -15,6 +16,7 @@ const SignUp = () => {
       full_name : values.full_name,
       password : values.password,
       password_confirmation : values.password_confirmation,
+      phone_number : values.phone_number,
       role
     });
     setMakeRegister(true);
@@ -25,7 +27,8 @@ const SignUp = () => {
       email : "",
       full_name : "",
       password : "",
-      password_confirmation : ""
+      password_confirmation : "",
+      phone_number:""
     },
     validationSchema: registerSchema,
     onSubmit
@@ -47,16 +50,24 @@ const SignUp = () => {
 
   const navigate = useNavigate();
   const handleRegister = async ()=>{
-    let data = await register();
-    if(data.status == 201) navigate("/registerSuccess");
+    let response = await register();
+    if(response.status == 201) navigate("/registerSuccess");
+    else {
+      setMessage(response.data.message)
+      console.log(response.message);
+    }
   }
 
 
   return (
-    <div className="w-full h-full flex flex-col gap-2 max-w-screen-xl">
-        <h3 className="text-white font-bold text-3xl">Register</h3>
+    <div className="w-full h-full flex flex-col gap-2 max-w-screen-xl justify-center items-center">
+      <h3 className="text-white font-bold text-3xl">Sign Up</h3>
         <form onSubmit={formik.handleSubmit} action="" className="bg-white W-full p-16 rounded-2xl flex flex-col gap-6">
-              
+        {message && (
+          <div className=" text-red-700 bg-red-200 p-2 border border-red text-center text-bold  w-full leading-3">
+            {message}
+          </div>
+        )}
           {formik.errors.full_name && <div className="text-red-400 w-full text-start leading-3">{formik.errors.full_name}</div>}
             <input 
               type="text"
@@ -89,6 +100,16 @@ const SignUp = () => {
 
                 <label className={role + " flex-1 text-center bg-slate-50 cursor-pointer hover:bg-brand-80 transition-all checked-delivery rounded-lg py-3 text-brand "} htmlFor="delivery-check">Delivery Man</label>
             </div>
+            {formik.errors.phone_number && <div className="text-red-400 w-full text-start leading-3">{formik.errors.phone_number}</div>}
+            <input 
+              type="text" 
+              value={formik.values.phone_number}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              name="phone_number"
+              className={formik.errors.phone_number ? "invalid bg-red-300" : ""}
+              // onChange={()=> handlephone_numberChange(event)} 
+              placeholder="Phone Number"/>
             {formik.errors.password && <div className="text-red-400 w-full text-start leading-3">{formik.errors.password}</div>}
             <input 
               type="password" 

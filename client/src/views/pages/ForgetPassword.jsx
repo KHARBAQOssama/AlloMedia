@@ -39,9 +39,10 @@ const ForgetPassword = () => {
     onSubmit,
   });
   return (
-    <div>
-      ForgetPassword
-      {!submited && (
+    <div className="h-full flex flex-col gap-2 max-w-screen-xl justify-center items-center">
+      
+      {!submited && (<>
+      <h3 className="text-white font-bold text-3xl">Forget Password</h3>
         <form
           onSubmit={formik.handleSubmit}
           action=""
@@ -70,9 +71,9 @@ const ForgetPassword = () => {
           <button type="submit" className="w-full text-white bg-brand">
             submit
           </button>
-        </form>
+        </form></>
       )}
-      {submited && <div>Email sent successfully</div>}
+      {submited && <div className="py-12 px-28 text-brand bg-white rounded-lg font-semibold border-l-4 border-green-5 00 ">Email sent successfully</div>}
     </div>
   );
 };

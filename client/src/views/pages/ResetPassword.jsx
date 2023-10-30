@@ -43,8 +43,11 @@ const ResetPassword = () => {
     validationSchema: resetPasswordSchema,
     onSubmit,
   });
-  return <div>
-    {!reseted && (
+  return (
+    <div className="h-full flex flex-col gap-2 max-w-screen-xl justify-center items-center">
+      
+        {!reseted && (<>
+        <h3 className="text-white font-bold text-3xl">Forget Password</h3>
         <form
           onSubmit={formik.handleSubmit}
           action=""
@@ -84,9 +87,11 @@ const ResetPassword = () => {
             submit
           </button>
         </form>
+        </>
       )}
-      {reseted && <div>password reseted successfully</div>}
-  </div>;
+      {reseted && <div className="py-12 px-28 text-brand bg-white rounded-sm ">password reseted successfully</div>}
+  </div>
+  )
 };
 
 export default ResetPassword;

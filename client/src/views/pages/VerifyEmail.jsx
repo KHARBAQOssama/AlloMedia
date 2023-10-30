@@ -31,17 +31,14 @@ useEffect(() => {
       }
       const TOKEN = new URLSearchParams(location.search).get("token");
       if (TOKEN) {
-        // console.log(TOKEN);
-            // setToken(TOKEN);
-            // console.log(token);
         try {
           const response = await verifyEmail(TOKEN);
           console.log(response);
           if (response.status === 200) {
             setVerified(true);
+            navigate('/verified')
           }else if(response.status === 400) setMessage("the validation expired");
         } catch (error) {
-          // Handle any errors that occur during the verification process
           console.error("Error verifying email:", error);
         }
       }
@@ -52,9 +49,9 @@ useEffect(() => {
 
   return (
     <div>
-        {!verified && !message && <h3>still pending</h3>}
-        {message && <h3>{message}</h3>}
-        {verified && <h3>verified account</h3>}
+        {!verified && !message && <h3 className="bg-white text-brand font-bold text-lg py-6 px-28 border-l-8 border-green-500">still pending</h3>}
+        {message && <h3 className="bg-white text-brand font-bold text-lg py-6 px-28 border-l-8 border-green-500">{message}</h3>}
+        {verified && <h3 className="bg-white text-brand font-bold text-lg py-6 px-28 border-l-8 border-green-500">verified account</h3>}
     </div>
   )
 }

@@ -17,8 +17,8 @@ const userSchema = new mongoose.Schema({
     },
     phone_number : {
         type : String,
-        required : true,
         unique : true,
+        required : true
     },
     image_url : {
         type : String,
@@ -49,6 +49,7 @@ userSchema.methods.hashPassword = async function (){
 
 userSchema.pre('save', async function() {
     await this.hashPassword();
+    console.log(this.password);
 });
 
 const User = mongoose.model('User',userSchema)
