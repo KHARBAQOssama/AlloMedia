@@ -21,6 +21,7 @@ console.log(email, full_name, phone_number, password);
             
             return res.status(400).json({message: 'All fields are required'})
         }
+        
         if(password != password_confirmation){
             return res.status(400).json({message: 'Passwords do not match'})
         }
