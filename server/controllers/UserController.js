@@ -37,12 +37,12 @@ console.log(email, full_name, phone_number, password);
 
         let existingUser = await User.findOne({email})
         if(existingUser){
-            return res.status(400).json({message: 'Email already token'})
+            return res.status(409).json({message: 'Email already token'})
         }
 
         existingUser = await User.findOne({phone_number})
         if(existingUser){
-            return res.status(400).json({message: 'Phone Number already in use'})
+            return res.status(409).json({message: 'Phone Number already in use'})
         }
 
         let user = new User({ 

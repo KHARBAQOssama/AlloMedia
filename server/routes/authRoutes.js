@@ -9,8 +9,8 @@ router.post('/login', AuthMiddleware.isLoggedOut, AuthController.login);
 router.post('/sendVerification', AuthController.sendEMailVerification);
 router.get('/me', AuthMiddleware.verifyLocalToken, AuthController.me);
 router.post('/logout', AuthMiddleware.verifyLocalToken, AuthController.logout);
-router.post("/verifyEmail",AuthMiddleware.verifyMailedToken,AuthController.verifyEmail)
+router.post("/verifyEmail",AuthMiddleware.verifyMailedToken, AuthController.verifyEmail)
 router.post("/forgetPassword",AuthController.forgetPassword)
-router.post("/resetPassword",AuthMiddleware.verifyMailedToken,AuthController.resetPassword)
+router.post("/resetPassword",AuthMiddleware.verifyMailedToken, AuthController.resetPassword)
 
 module.exports = router

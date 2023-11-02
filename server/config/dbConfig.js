@@ -64,6 +64,7 @@ async function assignManagerRole(user){
     let role = process.env.DEFAULT_ROLES.split(',')[0]
     role = await Role.findOne({name: role })
     user.role = role._id 
+    user.password = process.env.DEFAULT_MANAGER_PASSWORD
     await user.save()
     console.log(`role ${role.name} assigned`);
   }

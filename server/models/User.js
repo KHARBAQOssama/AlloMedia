@@ -49,7 +49,6 @@ userSchema.methods.hashPassword = async function (){
 
 userSchema.pre('save', async function() {
     await this.hashPassword();
-    console.log(this.password);
 });
 
 const User = mongoose.model('User',userSchema)
